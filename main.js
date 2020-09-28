@@ -23,6 +23,34 @@
 // // Copy the format
 // EXAMPLE OUTPUT: 
 
+const fetch = require('node-fetch')
+let url1 = 'https://api.publicapis.org/entries'
+fetch(url1)
+    .then((data) => data.json())
+    .then(({ count, entries }) => {
+        let randomIndex = Math.floor(Math.random() * count)
+        let randomEntry = entries[randomIndex]
+        let randomCategory = randomEntry.Category
+        let result = entries
+        //Get a new array of entries that have category match randomCategory
+        .filter((entry) => entry.Category === randomCategory)
+        //print only 4 keys api, description, link and category in each entry
+        .reduce((acc, {API, Description, Link, Category}) =>{
+            return `
+            ${acc}
+            API: ${API} \n
+            Description: ${Description} \n
+            Link: ${Link} \n
+            Category: ${Category} \n
+            --- 
+            `
+        })
+        console.log(result)
+    })
+    .catch((error) => console.log(`there is an error: ${error}`))
+
+
+
 // You random category is ANIMALS:
 
 // API: Cat Facts
@@ -94,6 +122,11 @@
 // // Then refactor and use array methods if you can
 // // Also use destructuring if you can
 // // Refer to the video instructions
+
+// let url2 = 'https://api.publicapis.org/entries'
+// fetch(url2)
+// .then((data) => data.json())
+// .then((newData) => console.log(newData))
 
 // SUMMARY:
 // API Data from https://api.publicapis.org/entries:
