@@ -28,7 +28,7 @@ let apis = [
       },
 ]
 
-let nums = ['a','b','c','d','a']
+let nums = ['a','b','c','d','']
 let result = nums.filter((char) => char === 'a')
 result
 let length = nums.length

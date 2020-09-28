@@ -31,12 +31,12 @@ fetch(url1)
         let randomIndex = Math.floor(Math.random() * count)
         let randomEntry = entries[randomIndex]
         let randomCategory = randomEntry.Category
-        let result = entries
-        //Get a new array of entries that have category match randomCategory
-        .filter((entry) => entry.Category === randomCategory)
-        //print only 4 keys api, description, link and category in each entry
-        .reduce((acc, {API, Description, Link, Category}) =>{
-            return `
+        let printEntriesByARandomCategory = entries
+            //Get a new array of entries that have category match randomCategory
+            .filter((entry) => entry.Category === randomCategory)
+            //print only 4 keys api, description, link and category in each entry
+            .reduce((acc, { API, Description, Link, Category }) => {
+                return `
             ${acc}
             API: ${API} \n
             Description: ${Description} \n
@@ -44,8 +44,8 @@ fetch(url1)
             Category: ${Category} \n
             --- 
             `
-        })
-        console.log(result)
+            })
+        console.log(printEntriesByARandomCategory)
     })
     .catch((error) => console.log(`there is an error: ${error}`))
 
@@ -123,10 +123,41 @@ fetch(url1)
 // // Also use destructuring if you can
 // // Refer to the video instructions
 
-// let url2 = 'https://api.publicapis.org/entries'
-// fetch(url2)
-// .then((data) => data.json())
-// .then((newData) => console.log(newData))
+let url2 = 'https://api.publicapis.org/entries'
+fetch(url2)
+    .then((data) => data.json())
+    .then(({entries }) => {
+        // Create an array of all categories
+        let categories = []
+        for (const entry of entries) {
+            if (!categories.includes(entry.Category)) {
+                categories.push(entry.Category)
+            }
+        }
+
+        // Print each Entry
+        function printEntry({ Category, Description, API, Link }) {
+            console.log(`
+            API: ${API} \n
+            Description: ${Description} \n
+            Link: ${Link} \n
+            Category: ${Category} \n
+            `)
+        }
+
+        // Loop through categories array, each time, print the only the first 3 entries of each category
+        for (const category of categories) {
+            let entriesPerCategory = entries.filter((entry) => entry.Category === category)
+            let [one, two, three, ...rest] = entriesPerCategory
+            console.log(`\n
+            ${category.toUpperCase()}\n
+            ---`)
+            printEntry(one)
+            printEntry(two)
+            printEntry(three)
+        }
+    })
+.catch(error => console.log(`There is an error: ${error}`))
 
 // SUMMARY:
 // API Data from https://api.publicapis.org/entries:
